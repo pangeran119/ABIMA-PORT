@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abima - Executive Personal Website</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Playfair Display (Serif Mewah) & Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Canvas Confetti CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        emerald: {
+                            950: '#071A2E',
+                            900: '#0B2540',
+                            800: '#123B5D',
+                            700: '#1B4F78',
+                            600: '#28658F',
+                            500: '#3B82B8',
+                            400: '#6FA8D6',
+                            300: '#A9C9E5',
+                            200: '#C7DCEF',
+                            100: '#E3EEF8'
+                        },
+                        gold: {
+                            300: '#b7c9da',
+                            400: '#9bb2c9',
+                            500: '#7896b3',
+                            600: '#5e7d9b',
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['"Playfair Display"', 'serif'],
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom Styling & Glassmorphism Effects */
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: #081522;
+            color: #EAF2FA;
+            min-height: 100vh;
+        }
+
+        .font-serif {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .gold-gradient-text {
+            background: none;
+            color: #dce7f1;
+            -webkit-text-fill-color: currentColor;
+        }
+
+        .gold-border {
+            border-color: rgba(143, 170, 196, .35);
+        }
+
+        .glass-card {
+            background: rgba(11, 37, 64, 0.48);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(143, 170, 196, 0.16);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .glass-card-hover {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glass-card-hover:hover {
+            transform: translateY(-5px);
+            border-color: rgba(143, 170, 196, 0.38);
+            box-shadow: 0 25px 50px rgba(59, 130, 184, 0.25);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #071A2E;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #31536f;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #7896b3;
+        }
+
+        /* Nav Tab Animation */
+        .nav-btn.active {
+            background: rgba(91, 126, 158, 0.22);
+            border-color: #7896b3;
+            color: #c5d5e4;
+            box-shadow: none;
+        }
+
+        /* Intro loading screen */
+        #abima-intro {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            background: #081522;
+            transition: opacity .7s ease, visibility .7s ease;
+        }
+        #abima-intro.intro-hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+        .intro-panel {
+            width: min(100%, 560px);
+            text-align: center;
+            padding: 48px 28px;
+            border: 1px solid rgba(143, 170, 196, .24);
+            border-radius: 28px;
+            background: rgba(7, 26, 46, .58);
+            box-shadow: 0 18px 48px rgba(0, 0, 0, .32);
+            backdrop-filter: blur(18px);
+        }
+        .intro-monogram {
+            width: 76px;
+            height: 76px;
+            margin: 0 auto 22px;
+            display: grid;
+            place-items: center;
+            border-radius: 50%;
+            border: 1px solid rgba(143, 170, 196, .48);
+            background: linear-gradient(145deg, #173F63, #071A2E);
+            color: #b7c9da;
+            font: 700 42px 'Playfair Display', serif;
+            box-shadow: 0 0 24px rgba(91, 126, 158, .12);
+        }
+        .intro-spinner {
+            width: 42px;
+            height: 42px;
+            margin: 28px auto 14px;
+            border: 3px solid rgba(169, 201, 229, .2);
+            border-top-color: #b7c9da;
+            border-right-color: #557590;
+            border-radius: 50%;
+            animation: abima-spin .85s linear infinite;
+        }
+        @keyframes abima-spin { to { transform: rotate(360deg); } }
+        #intro-loading-text, #intro-enter-area { transition: opacity .35s ease; }
+        #intro-enter-area { display: none; }
+        #intro-enter-area.ready { display: block; animation: intro-appear .65s ease both; }
+        @keyframes intro-appear {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .intro-enter-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 24px;
+            padding: 14px 26px;
+            border: 1px solid rgba(155, 178, 201, .55);
+            border-radius: 999px;
+            background: #31536f;
+            color: #edf3f8;
+            font-weight: 800;
+            letter-spacing: .04em;
+            box-shadow: 0 8px 22px rgba(0, 0, 0, .22);
+            transition: transform .25s ease, box-shadow .25s ease;
+        }
+        .intro-enter-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 26px rgba(0, 0, 0, .3);
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .intro-spinner { animation-duration: 2.5s; }
+            #abima-intro, .intro-enter-button { transition: none; }
+        }
+
+
+        /* Responsive optimization for phones and tablets */
+        html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+        body { overflow-x: hidden; width: 100%; }
+        img { max-width: 100%; }
+        button, a, input, textarea { touch-action: manipulation; }
+        button { -webkit-tap-highlight-color: transparent; }
+        .page-content { width: 100%; min-width: 0; }
+        @media (max-width: 1024px) {
+            header { position: sticky; top: 0; }
+            main { padding-top: 24px; }
+        }
+        @media (max-width: 640px) {
+            body { font-size: 14px; }
+            header .h-20 { height: 68px; }
+            main { padding-left: 16px; padding-right: 16px; padding-top: 24px; }
+            .page-content h1 { font-size: clamp(2rem, 9vw, 3rem); line-height: 1.2; }
+            .page-content h2 { font-size: clamp(1.6rem, 7vw, 2.2rem); line-height: 1.3; }
+            .page-content .glass-card { max-width: 100%; }
+            .intro-panel { padding: 35px 18px; border-radius: 22px; }
+            .intro-enter-button { width: 100%; padding: 15px 12px; font-size: 11px; }
+            #mobile-menu button { font-size: 13px; min-height: 48px; }
+            #page-1 .grid { gap: 32px; }
+            #page-1 img { max-height: 420px; }
+            #page-2 .glass-card { padding: 18px; }
+            #page-3 .grid, #page-4 .grid, #page-5 .grid { gap: 18px; }
+            #page-6 input, #page-6 textarea { font-size: 16px; }
+            #memory-modal { padding: 10px; }
+            #memory-modal > div { padding: 18px; max-height: 92vh; }
+            footer { padding: 22px 12px; }
+        }
+        @media (max-width: 380px) {
+            .intro-panel h1 { font-size: 36px; }
+            #page-1 .grid { gap: 25px; }
+            .intro-enter-button { font-size: 10px; }
+        }
+        .quiz-option { width: 100%; min-height: 54px; }
+        .quiz-option:disabled { cursor: default; }
+        .quiz-option.correct { background: rgba(4,120,87,.55); border: 2px solid #34d399; color: #fff; }
+        .quiz-option.wrong { background: rgba(136,19,55,.35); border: 2px solid #fb7185; color: #fecdd3; }
+
+        /* Tampilan responsif dan aksen warna yang lebih sederhana */
+        html { scroll-behavior: smooth; }
+        body { overflow-x: hidden; }
+        img { max-width: 100%; }
+        .glass-card { box-shadow: 0 12px 28px rgba(0, 0, 0, .22); }
+        .glass-card-hover:hover { box-shadow: 0 16px 32px rgba(0, 0, 0, .28); }
+        @media (max-width: 640px) {
+            main { padding-left: 16px; padding-right: 16px; }
+            .intro-panel { padding: 36px 20px; }
+            .intro-enter-button { width: 100%; padding: 14px 12px; font-size: 11px; }
+            #mobile-menu button { min-height: 46px; font-size: 13px; }
+            #page-1 .grid { gap: 28px; }
+            #page-1 img { max-height: 420px; }
+            #page-2 .glass-card { padding: 18px; }
+            #page-3 .grid, #page-4 .grid, #page-5 .grid { gap: 18px; }
+            #page-6 input, #page-6 textarea { font-size: 16px; }
+            #memory-modal { padding: 10px; }
+            #memory-modal > div { padding: 18px; max-height: 92vh; }
+        }
+    </style>
+</head>
+<body class="flex flex-col justify-between min-h-screen selection:bg-gold-500 selection:text-emerald-950">
+
+    <!-- Intro / Loading Screen ABIMA -->
+    <section id="abima-intro" aria-label="Pembuka website ABIMA">
+        <div class="intro-panel">
+            <div class="intro-monogram">A</div>
+            <p class="text-gold-400 text-xs font-bold tracking-[.35em] uppercase mb-3">Personal Portfolio</p>
+            <h1 class="font-serif text-4xl sm:text-5xl font-bold text-white tracking-wide">ABIMA<span class="text-gold-400">.</span></h1>
+            <p class="text-emerald-200/75 text-sm tracking-widest uppercase mt-3">Midnight Blue Experience</p>
+
+            <div id="intro-loading-text">
+                <div class="intro-spinner" aria-hidden="true"></div>
+                <p class="text-emerald-100 text-sm">Menyiapkan website...</p>
+                <p class="text-emerald-300/60 text-xs mt-2">Mohon tunggu sebentar</p>
+            </div>
+
+            <div id="intro-enter-area">
+                <p class="text-white text-base sm:text-lg mt-8">Selamat datang di portofolio pribadi ABIMA.</p>
+                <p class="text-emerald-200/70 text-sm mt-2">Klik tombol di bawah untuk melanjutkan.</p>
+                <button type="button" class="intro-enter-button" id="intro-enter-button">
+                    <span>KLIK UNTUK MASUK KE PORTO UTAMA ABIMA</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Header Navigation -->
+    <header class="sticky top-0 z-40 bg-emerald-950/80 backdrop-blur-md border-b border-emerald-800/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo / Brand -->
+                <div class="flex items-center space-x-3 cursor-pointer" onclick="switchPage(1)">
+                    <div class="w-10 h-10 rounded-full bg-[#52718e] p-[2px] shadow-lg shadow-emerald-900/50">
+                        <div class="w-full h-full bg-emerald-950 rounded-full flex items-center justify-center">
+                            <span class="font-serif font-bold text-gold-400 text-xl">A</span>
+                        </div>
+                    </div>
+                    <div>
+                        <span class="font-serif text-xl font-bold tracking-wider text-white">ABIMA<span class="text-gold-400">.</span></span>
+                        <p class="text-[10px] tracking-widest uppercase text-emerald-300/70">Personal Realm</p>
+                    </div>
+                </div>
+
+                <!-- Desktop Navigation Tabs -->
+                <nav class="hidden lg:flex space-x-2">
+                    <button onclick="switchPage(1)" id="nav-btn-1" class="nav-btn active px-4 py-2 rounded-full text-xs font-semibold tracking-wider transition-all duration-300 border border-emerald-800/40 text-emerald-200 hover:text-white flex items-center gap-2">
+                        <i class="fa-solid fa-user text-xs"></i> 1. Profil
+                    </button>
+                    <button onclick="switchPage(2)" id="nav-btn-2" class="nav-btn px-4 py-2 rounded-full text-xs font-semibold tracking-wider transition-all duration-300 border border-emerald-800/40 text-emerald-200 hover:text-white flex items-center gap-2">
+                        <i class="fa-solid fa-gamepad text-xs"></i> 2. Kuis Favorit
+                    </button>
+                    <button onclick="switchPage(3)" id="nav-btn-3" class="nav-btn px-4 py-2 rounded-full text-xs font-semibold tracking-wider transition-all duration-300 border border-emerald-800/40 text-emerald-200 hover:text-white flex items-center gap-2">
+                        <i class="fa-solid fa-images text-xs"></i> 3. Galeri Foto
+                    </button>
+                    <button onclick="switchPage(4)" id="nav-btn-4" class="nav-btn px-4 py-2 rounded-full text-xs font-semibold tracking-wider transition-all duration-300 border border-emerald-800/40 text-emerald-200 hover:text-white flex items-center gap-2">
+                        <i class="fa-solid fa-box-archive text-xs"></i> 4. Kenangan
+                    </button>
+                    <button onclick="switchPage(5)" id="nav-btn-5" class="nav-btn px-4 py-2 rounded-full text-xs font-semibold tracking-wider transition-all duration-300 border border-emerald-800/40 text-emerald-200 hover:text-white flex items-center gap-2">
+                        <i class="fa-solid fa-share-nodes text-xs"></i> 5. Sosial Media
+                    </button>
+                    <button onclick="switchPage(6)" id="nav-btn-6" class="nav-btn px-4 py-2 rounded-full text-xs font-semibold tracking-wider transition-all duration-300 border border-emerald-800/40 text-emerald-200 hover:text-white flex items-center gap-2">
+                        <i class="fa-solid fa-envelope text-xs"></i> 6. Kirim Pesan
+                    </button>
+                </nav>
+
+                <!-- Mobile Menu Toggle Button -->
+                <div class="lg:hidden">
+                    <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="p-2.5 rounded-xl bg-emerald-900/60 border border-emerald-700/50 text-gold-400 focus:outline-none">
+                        <i class="fa-solid fa-bars text-xl" id="menu-icon"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Menu -->
+        <div id="mobile-menu" class="hidden lg:hidden bg-emerald-950/95 border-b border-emerald-800 px-4 pt-2 pb-4 space-y-2">
+            <button onclick="switchPage(1); toggleMobileMenu();" class="w-full text-left px-4 py-3 rounded-xl bg-emerald-900/40 border border-emerald-800/50 text-white font-medium flex items-center gap-3">
+                <i class="fa-solid fa-user text-gold-400 w-5"></i> Halaman 1: Profil & Intro
+            </button>
+            <button onclick="switchPage(2); toggleMobileMenu();" class="w-full text-left px-4 py-3 rounded-xl bg-emerald-900/40 border border-emerald-800/50 text-white font-medium flex items-center gap-3">
+                <i class="fa-solid fa-gamepad text-gold-400 w-5"></i> Halaman 2: Kuis Favorit
+            </button>
+            <button onclick="switchPage(3); toggleMobileMenu();" class="w-full text-left px-4 py-3 rounded-xl bg-emerald-900/40 border border-emerald-800/50 text-white font-medium flex items-center gap-3">
+                <i class="fa-solid fa-images text-gold-400 w-5"></i> Halaman 3: Album Galeri 
+            </button>
+            <button onclick="switchPage(4); toggleMobileMenu();" class="w-full text-left px-4 py-3 rounded-xl bg-emerald-900/40 border border-emerald-800/50 text-white font-medium flex items-center gap-3">
+                <i class="fa-solid fa-box-archive text-gold-400 w-5"></i> Halaman 4: Memory Vault
+            </button>
+            <button onclick="switchPage(5); toggleMobileMenu();" class="w-full text-left px-4 py-3 rounded-xl bg-emerald-900/40 border border-emerald-800/50 text-white font-medium flex items-center gap-3">
+                <i class="fa-solid fa-share-nodes text-gold-400 w-5"></i> Halaman 5: Media Sosial
+            </button>
+            <button onclick="switchPage(6); toggleMobileMenu();" class="w-full text-left px-4 py-3 rounded-xl bg-emerald-900/40 border border-emerald-800/50 text-white font-medium flex items-center gap-3">
+                <i class="fa-solid fa-envelope text-gold-400 w-5"></i> Halaman 6: Pesan Singkat
+            </button>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT AREA CONTAINER -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 relative">
+
+        <!-- ========================================== -->
+        <!-- HALAMAN 1: PERKENALAN & FOTO (PROFILE) -->
+        <!-- ========================================== -->
+        <section id="page-1" class="page-content block">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center min-h-[70vh]">
+                <!-- Deskripsi & Perkenalan -->
+                <div class="lg:col-span-7 space-y-6 text-left">
+                    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-card border-gold-500/30 text-gold-400 text-xs font-semibold uppercase tracking-widest">
+                        <i class="fa-solid fa-crown text-xs"></i> Welcome to My Sanctuary
+                    </div>
+                    <h1 class="text-4xl sm:text-6xl font-serif font-bold text-white leading-tight">
+                        Halo, Saya <br/>
+                        <span class="gold-gradient-text">Abima</span>
+                    </h1>
+                    <p class="text-emerald-100/80 text-base sm:text-lg leading-relaxed font-light">
+                        Selamat datang di Dunia Bima. Halaman ini dirancang khusus untuk membagikan kisah, momen favorit, serta kenangan berharga yang tersimpan dengan indah.
+                    </p>
+                    
+                    <div class="pt-4 flex flex-wrap gap-4">
+                        <button onclick="switchPage(2)" class="px-7 py-3.5 rounded-full bg-[#31536f] hover:bg-[#3b6488] text-emerald-950 font-bold text-sm tracking-wider shadow-lg shadow-gold-500/20 transition-all transform hover:-translate-y-1 flex items-center gap-3">
+                            Mulai Eksplorasi <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                        <button onclick="switchPage(5)" class="px-7 py-3.5 rounded-full glass-card border border-gold-400/30 text-white font-medium text-sm tracking-wider hover:bg-emerald-800/40 transition-all flex items-center gap-3">
+                            <i class="fa-brands fa-instagram text-gold-400"></i> Kontak Media Sosial
+                        </button>
+                    </div>
+
+                    <!-- Highlight Badges -->
+                    <div class="grid grid-cols-3 gap-4 pt-8 border-t border-emerald-800/40">
+                        <div>
+                            <p class="text-xs text-emerald-400 uppercase tracking-widest font-semibold">Status</p>
+                            <p class="text-sm font-medium text-white mt-1">Pelajar</p>
+                        </div>
+                        <div>
+                            <p class="text-xs text-emerald-400 uppercase tracking-widest font-semibold">Tahun Lahir</p>
+                            <p class="text-sm font-medium text-white mt-1">2010</p>
+                        </div>
+                        <div>
+                            <p class="text-xs text-emerald-400 uppercase tracking-widest font-semibold">Tema Utama</p>
+                            <p class="text-sm font-medium text-white mt-1">Midnight Blue & Gold</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Frame Foto Profil Mewah -->
+                <div class="lg:col-span-5 flex justify-center">
+                    <div class="relative group">
+                        <!-- Glow Background -->
+                        <div class="absolute -inset-1 bg-gradient-to-r from-gold-500 via-emerald-400 to-gold-400 rounded-3xl blur-xl opacity-50 group-hover:opacity-80 transition duration-1000 group-hover:duration-200"></div>
+                        
+                        <!-- Main Frame -->
+                        <div class="relative w-72 h-96 sm:w-80 sm:h-[420px] rounded-3xl glass-card p-3 border-2 border-gold-400/40 overflow-hidden flex flex-col justify-between shadow-2xl">
+                            <div class="w-full h-full rounded-2xl overflow-hidden relative">
+                                <img src="https://cdn.phototourl.com/member/2026-11-02-bf2ce78c-f6f2-4f4c-a990-ba3c1c453779.jpg" 
+                                     alt="Foto Abima" 
+                                     class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700">
+                                <div class="absolute inset-0 bg-gradient-to-t from-emerald-950 via-transparent to-transparent opacity-70"></div>
+                                <div class="absolute bottom-4 left-4 right-4">
+                                    <span class="px-3 py-1 rounded-full bg-emerald-950/80 backdrop-blur-md text-gold-400 text-xs border border-gold-500/30 font-semibold">
+                                        Verified Profile
+                                    </span>
+                                    <h3 class="text-white font-serif font-bold text-xl mt-2">wxyzabimaaa_</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- HALAMAN 2: KUIS FAVORIT SATU PER SATU      -->
+        <!-- ========================================== -->
+        <section id="page-2" class="page-content hidden">
+            <div class="max-w-3xl mx-auto space-y-8">
+                <div class="text-center space-y-3">
+                    <span class="px-4 py-1.5 rounded-full glass-card border-gold-500/30 text-gold-400 text-xs font-semibold uppercase tracking-widest">Interactive Trivia</span>
+                    <h2 class="text-3xl sm:text-4xl font-serif font-bold text-white">Seberapa Kenal Kamu Dengan Abima?</h2>
+                    <p class="text-emerald-200/70 text-sm max-w-xl mx-auto">Jawab lima pertanyaan tentang Bima. Setiap pertanyaan akan muncul satu per satu.</p>
+                </div>
+
+                <div class="glass-card rounded-3xl p-5 sm:p-8 border border-gold-400/30 space-y-6" id="quiz-panel">
+                    <div id="quiz-progress-area" class="space-y-2">
+                        <div class="flex justify-between items-center text-xs text-emerald-200">
+                            <span id="quiz-progress-text">Pertanyaan 1 dari 5</span>
+                            <span id="quiz-progress-percent" class="text-gold-400 font-bold">20%</span>
+                        </div>
+                        <div class="h-2 rounded-full bg-emerald-950 overflow-hidden"><div id="quiz-progress-bar" class="h-full rounded-full bg-gradient-to-r from-gold-500 to-gold-300 transition-all duration-500" style="width:20%"></div></div>
+                    </div>
+
+                    <div id="quiz-question-area" class="space-y-5">
+                        <div class="flex items-start gap-3">
+                            <div id="quiz-number" class="w-10 h-10 shrink-0 rounded-full bg-gold-500/20 text-gold-400 flex items-center justify-center font-bold border border-gold-500/40">1</div>
+                            <h3 id="quiz-question" class="text-xl sm:text-2xl font-serif font-bold text-white pt-1">Kapan Tanggal Lahir Bima?</h3>
+                        </div>
+                        <div id="quiz-options" class="grid grid-cols-1 gap-3"></div>
+                        <div id="quiz-feedback" class="hidden rounded-xl px-4 py-3 text-sm font-semibold" aria-live="polite"></div>
+                        <button id="quiz-next-button" onclick="nextQuestion()" class="hidden w-full sm:w-auto sm:min-w-48 ml-auto px-7 py-3 rounded-full bg-gradient-to-r from-gold-500 to-gold-600 text-emerald-950 font-bold text-sm flex items-center justify-center gap-3 hover:from-gold-400 hover:to-gold-500 transition">
+                            <span id="quiz-next-text">Pertanyaan Selanjutnya</span><i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+
+                    <div id="quiz-result" class="hidden text-center space-y-5">
+                        <div class="w-16 h-16 mx-auto rounded-full bg-gold-500/20 border border-gold-400/50 flex items-center justify-center text-gold-400 text-3xl"><i class="fa-solid fa-trophy"></i></div>
+                        <div class="space-y-2">
+                            <p class="text-xs uppercase tracking-[.25em] text-gold-400 font-bold">Hasil Kuis Kamu</p>
+                            <h3 class="text-3xl sm:text-4xl font-serif font-bold text-white"><span id="quiz-final-score">0</span>/100</h3>
+                            <p id="quiz-correct-count" class="text-emerald-200 text-sm">0 dari 5 jawaban benar</p>
+                            <p id="quiz-final-message" class="text-emerald-100/80 text-sm"></p>
+                        </div>
+                        <div id="quiz-answer-summary" class="text-left space-y-3"></div>
+                        <div class="flex flex-col sm:flex-row gap-3 justify-center pt-2">
+                            <button onclick="restartQuiz()" class="px-6 py-3 rounded-full glass-card border border-gold-400/40 text-white font-bold text-sm"><i class="fa-solid fa-rotate-right mr-2 text-gold-400"></i>Ulangi Kuis</button>
+                            <button onclick="switchPage(3)" class="px-6 py-3 rounded-full bg-gradient-to-r from-gold-500 to-gold-600 text-emerald-950 font-bold text-sm">Lanjut ke Galeri <i class="fa-solid fa-arrow-right ml-2"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- HALAMAN 3: ALBUM FOTO / GALERI (6 FOTO)   -->
+        <!-- ========================================== -->
+        <section id="page-3" class="page-content hidden">
+            <div class="space-y-8">
+                <!-- Header -->
+                <div class="text-center space-y-3">
+                    <span class="px-4 py-1.5 rounded-full glass-card border-gold-500/30 text-gold-400 text-xs font-semibold uppercase tracking-widest">
+                        Photo Collection
+                    </span>
+                    <h2 class="text-3xl sm:text-4xl font-serif font-bold text-white">Album Foto</h2>
+                    <p class="text-emerald-200/70 text-sm max-w-xl mx-auto">Koleksi momen yang pernah dilakukan bima.</p>
+                </div>
+
+                <!-- 6 Photo Cards Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+                    <!-- Photo 1 -->
+                    <div class="glass-card rounded-2xl overflow-hidden glass-card-hover group border border-emerald-700/40">
+                        <div class="h-60 overflow-hidden relative">
+                            <img src="https://cdn.phototourl.com/member/2026-11-02-44efbf3e-93b3-4e2a-b11f-2734baa8ee5f.jpg" 
+                                 alt="Suasana Pantai" 
+                                 class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                            <div class="absolute inset-0 bg-gradient-to-t from-emerald-950 via-transparent to-transparent opacity-60"></div>
+                            <span class="absolute top-3 right-3 px-3 py-1 rounded-full bg-emerald-950/80 backdrop-blur-md text-gold-400 text-[10px] uppercase font-bold border border-gold-500/30">Foto 1</span>
+                        </div>
+                        <div class="p-5 space-y-2">
+                            <h3 class="font-serif font-bold text-xl text-white group-hover:text-gold-400 transition">Fashion Show 1</h3>
+                            <p class="text-xs text-emerald-200/70 leading-relaxed">
+                                Fashion Pertama ERA SHS.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Photo 2 -->
+                    <div class="glass-card rounded-2xl overflow-hidden glass-card-hover group border border-emerald-700/40">
+                        <div class="h-60 overflow-hidden relative">
+                            <img src="https://cdn.phototourl.com/member/2026-11-03-88363112-1b11-4c65-b2e0-472e7bf6e380.jpg" 
+                                 alt="Pemandangan Gunung" 
+                                 class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                            <div class="absolute inset-0 bg-gradient-to-t from-emerald-950 via-transparent to-transparent opacity-60"></div>
+                            <span class="absolute top-3 right-3 px-3 py-1 rounded-full bg-emerald-950/80 backdrop-blur-md text-gold-400 text-[10px] uppercase font-bold border border-gold-500/30">Foto 2</span>
+                        </div>
+                        <div class="p-5 space-y-2">
+                            <h3 class="font-serif font-bold text-xl text-white group-hover:text-gold-400 transition">Fashion Show 2</h3>
+                            <p class="text-xs text-emerald-200/70 leading-relaxed">
+                                Pertama kalinya ikut Fashion Show.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Photo 3 -->
+                    <div class="glass-card rounded-2xl overflow-hidden glass-card-hover group border border-emerald-700/40">
+                        <div class="h-60 overflow-hidden relative">
+                            <img src="https://cdn.phototourl.com/member/2026-11-03-358b5de1-3354-48d2-9d3c-4f06cce584e9.jpg" 
+                                 alt="Musik dan Gitar" 
+                                 class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                            <div class="absolute inset-0 bg-gradient-to-t from-emerald-950 via-transparent to-transparent opacity-60"></div>
+                            <span class="absolute top-3 right-3 px-3 py-1 rounded-full bg-emerald-950/80 backdrop-blur-md text-gold-400 text-[10px] uppercase font-bold border border-gold-500/30">Foto 3</span>
+                        </div>
+                        <div class="p-5 space-y-2">
+                            <h3 class="font-serif font-bold text-xl text-white group-hover:text-gold-400 transition">Finalis Duta Andi Martha</h3>
+                            <p class="text-xs text-emerald-200/70 leading-relaxed">
+                                Spesial Menjadi Finalis Duta Andi Martha.
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- HALAMAN 4: KENANGAN / MEMORY VAULT        -->
+        <!-- ========================================== -->
+        <section id="page-4" class="page-content hidden">
+            <div class="max-w-5xl mx-auto space-y-8">
+                <!-- Header -->
+                <div class="text-center space-y-3">
+                    <span class="px-4 py-1.5 rounded-full glass-card border-gold-500/30 text-gold-400 text-xs font-semibold uppercase tracking-widest">
+                        Interactive Vault
+                    </span>
+                    <h2 class="text-3xl sm:text-4xl font-serif font-bold text-white">Brankas Kenangan</h2>
+                    <p class="text-emerald-200/70 text-sm max-w-xl mx-auto">Klik salah satu kartu di bawah ini untuk membuka album kenangan mendalam di dalamnya.</p>
+                </div>
+
+                <!-- 2 Main Interactive Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pt-4">
+
+                    <!-- Memory Card 1 -->
+                    <div onclick="openMemoryModal(1)" class="glass-card rounded-3xl p-4 border border-gold-400/30 cursor-pointer group hover:border-gold-400 transition-all duration-500 transform hover:-translate-y-2 shadow-2xl relative overflow-hidden">
+                        <div class="relative h-72 rounded-2xl overflow-hidden">
+                            <img src="https://cdn.phototourl.com/member/2026-11-02-26216874-4d6d-4d0e-9e0d-5e998ebca7d8.jpg" 
+                                 alt="Koleksi Sekolah & Sahabat" 
+                                 class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
+                            <div class="absolute inset-0 bg-gradient-to-t from-emerald-950 via-emerald-950/40 to-transparent"></div>
+                            <div class="absolute bottom-5 left-5 right-5">
+                                <div class="flex items-center justify-between">
+                                    <span class="px-3 py-1 rounded-full bg-gold-500 text-emerald-950 text-xs font-bold uppercase tracking-wider">
+                                        Vault #1
+                                    </span>
+                                    <span class="text-gold-300 text-xs font-medium"><i class="fa-solid fa-layer-group"></i> 4 Foto Inside</span>
+                                </div>
+                                <h3 class="text-2xl font-serif font-bold text-white mt-2 group-hover:text-gold-400 transition">SHS ERA</h3>
+                                <p class="text-xs text-emerald-200/80 mt-1">Klik untuk membuka album galeri di Era SHS.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Memory Card 2 -->
+                    <div onclick="openMemoryModal(2)" class="glass-card rounded-3xl p-4 border border-gold-400/30 cursor-pointer group hover:border-gold-400 transition-all duration-500 transform hover:-translate-y-2 shadow-2xl relative overflow-hidden">
+                        <div class="relative h-72 rounded-2xl overflow-hidden">
+                            <img src="https://cdn.phototourl.com/member/2026-11-02-0400be8d-50c6-4d96-8b56-13de7f990b04.jpg" 
+                                 alt="Koleksi Liburan & Momen Penting" 
+                                 class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
+                            <div class="absolute inset-0 bg-gradient-to-t from-emerald-950 via-emerald-950/40 to-transparent"></div>
+                            <div class="absolute bottom-5 left-5 right-5">
+                                <div class="flex items-center justify-between">
+                                    <span class="px-3 py-1 rounded-full bg-gold-500 text-emerald-950 text-xs font-bold uppercase tracking-wider">
+                                        Vault #2
+                                    </span>
+                                    <span class="text-gold-300 text-xs font-medium"><i class="fa-solid fa-layer-group"></i> 4 Foto Inside</span>
+                                </div>
+                                <h3 class="text-2xl font-serif font-bold text-white mt-2 group-hover:text-gold-400 transition">JHS ERA</h3>
+                                <p class="text-xs text-emerald-200/80 mt-1">Klik untuk membuka Album Kenangan JHS ERA.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- HALAMAN 5: MEDIA SOSIAL                   -->
+        <!-- ========================================== -->
+        <section id="page-5" class="page-content hidden">
+            <div class="max-w-4xl mx-auto space-y-8">
+                <!-- Header -->
+                <div class="text-center space-y-3">
+                    <span class="px-4 py-1.5 rounded-full glass-card border-gold-500/30 text-gold-400 text-xs font-semibold uppercase tracking-widest">
+                        Social Connections
+                    </span>
+                    <h2 class="text-3xl sm:text-4xl font-serif font-bold text-white">Hubungi & Ikuti Saya</h2>
+                    <p class="text-emerald-200/70 text-sm max-w-xl mx-auto">Temukan saya di Instagram melalui akun utama publik maupun akun kedua pribadi di bawah ini.</p>
+                </div>
+
+                <!-- 2 IG Cards Container -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pt-4">
+
+                    <!-- IG FIRST (Public) -->
+                    <div class="glass-card rounded-3xl p-8 border border-gold-400/40 space-y-6 flex flex-col justify-between relative overflow-hidden group hover:border-gold-400 transition duration-500">
+                        <div class="absolute top-0 right-0 w-32 h-32 bg-gold-500/10 rounded-full blur-2xl group-hover:bg-gold-500/20 transition"></div>
+                        <div>
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-yellow-500 via-pink-500 to-purple-600 p-[2px] shadow-lg">
+                                    <div class="w-full h-full bg-emerald-950 rounded-[14px] flex items-center justify-center">
+                                        <i class="fa-brands fa-instagram text-2xl text-gold-400"></i>
+                                    </div>
+                                </div>
+                                <span class="px-3.5 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-bold border border-emerald-400/30 uppercase tracking-wider flex items-center gap-2">
+                                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> Public
+                                </span>
+                            </div>
+                            <p class="text-xs text-gold-400 uppercase font-bold tracking-widest">Main Account</p>
+                            <h3 class="text-2xl font-serif font-bold text-white mt-1">@wxyzabimaaa_</h3>
+                            <p class="text-xs text-emerald-200/70 mt-3 leading-relaxed">
+                                Akun Instagram utama yang bersifat publik. Tempat membagikan momen-momen keseharian, fotografi, dan aktivitas umum.
+                            </p>
+                        </div>
+                        
+                        <a href="https://instagram.com/wxyzabimaaa_" target="_blank" rel="noopener noreferrer" 
+                           class="w-full py-3.5 rounded-xl bg-[#31536f] hover:bg-[#3b6488] text-emerald-950 font-bold text-sm tracking-wider flex items-center justify-center gap-3 shadow-lg shadow-gold-500/20 transition transform hover:-translate-y-1">
+                            <span>Kunjungi Profil IG Utama</span>
+                            <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                        </a>
+                    </div>
+
+                    <!-- IG SECOND (Private) -->
+                    <div class="glass-card rounded-3xl p-8 border border-emerald-700/50 space-y-6 flex flex-col justify-between relative overflow-hidden group hover:border-gold-400/40 transition duration-500">
+                        <div class="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 rounded-full blur-2xl group-hover:bg-emerald-500/20 transition"></div>
+                        <div>
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="w-14 h-14 rounded-2xl bg-[#31536f] p-[2px] shadow-lg">
+                                    <div class="w-full h-full bg-emerald-950 rounded-[14px] flex items-center justify-center">
+                                        <i class="fa-solid fa-lock text-xl text-gold-400"></i>
+                                    </div>
+                                </div>
+                                <span class="px-3.5 py-1 rounded-full bg-amber-500/20 text-amber-300 text-xs font-bold border border-amber-400/30 uppercase tracking-wider flex items-center gap-2">
+                                    <i class="fa-solid fa-shield-halved text-xs"></i> Private
+                                </span>
+                            </div>
+                            <p class="text-xs text-emerald-400 uppercase font-bold tracking-widest">Second Account</p>
+                            <h3 class="text-2xl font-serif font-bold text-white mt-1">@syntaxberantakan_</h3>
+                            <p class="text-xs text-emerald-200/70 mt-3 leading-relaxed">
+                                Akun Instagram kedua khusus untuk lingkar pertemanan terdekat. Menyimpan cerita lebih personal dan memori acak.
+                            </p>
+                        </div>
+                        
+                        <a href="https://instagram.com/syntaxberantakan_" target="_blank" rel="noopener noreferrer" 
+                           class="w-full py-3.5 rounded-xl glass-card border border-gold-400/30 hover:bg-emerald-800/60 text-white font-bold text-sm tracking-wider flex items-center justify-center gap-3 transition transform hover:-translate-y-1">
+                            <span>Kunjungi Profil IG Second</span>
+                            <i class="fa-solid fa-arrow-up-right-from-square text-xs text-gold-400"></i>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- HALAMAN 6: PESAN / MESSAGE BOX             -->
+        <!-- ========================================== -->
+        <section id="page-6" class="page-content hidden">
+            <div class="max-w-2xl mx-auto space-y-8">
+                <!-- Header -->
+                <div class="text-center space-y-3">
+                    <span class="px-4 py-1.5 rounded-full glass-card border-gold-500/30 text-gold-400 text-xs font-semibold uppercase tracking-widest">
+                        Leave a Message
+                    </span>
+                    <h2 class="text-3xl sm:text-4xl font-serif font-bold text-white">Sampaikan Pesan Untukku</h2>
+                    <p class="text-emerald-200/70 text-sm max-w-xl mx-auto">Tulis pesan hangat, masukan, atau sekadar sapaan akrab di formulir eksklusif ini.</p>
+                </div>
+
+                <!-- Form Box -->
+                <div class="glass-card rounded-3xl p-6 sm:p-8 border border-gold-400/30 shadow-2xl relative">
+                    <form id="message-form" onsubmit="handleFormSubmit(event)" class="space-y-6">
+                        <div>
+                            <label for="sender-name" class="block text-xs uppercase tracking-wider font-bold text-emerald-300 mb-2">Nama Kamu</label>
+                            <div class="relative">
+                                <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-emerald-500">
+                                    <i class="fa-solid fa-user-pen"></i>
+                                </span>
+                                <input type="text" id="sender-name" required placeholder="Masukkan nama atau nama panggilan..." 
+                                       class="w-full pl-11 pr-4 py-3.5 rounded-xl bg-emerald-950/60 border border-emerald-700/60 text-white placeholder-emerald-600 focus:outline-none focus:border-gold-400 focus:ring-1 focus:ring-gold-400 text-sm transition">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="sender-message" class="block text-xs uppercase tracking-wider font-bold text-emerald-300 mb-2">Pesan Hangat</label>
+                            <div class="relative">
+                                <textarea id="sender-message" rows="5" required placeholder="Tuliskan pesanmu di sini..." 
+                                          class="w-full p-4 rounded-xl bg-emerald-950/60 border border-emerald-700/60 text-white placeholder-emerald-600 focus:outline-none focus:border-gold-400 focus:ring-1 focus:ring-gold-400 text-sm transition"></textarea>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="w-full py-4 rounded-xl bg-[#31536f] hover:bg-[#3b6488] text-emerald-950 font-bold text-sm tracking-widest uppercase flex items-center justify-center gap-3 shadow-lg shadow-gold-500/20 transition transform hover:-translate-y-1">
+                            <i class="fa-solid fa-paper-plane"></i>
+                            <span>Kirim Pesan Sekarang</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-emerald-950/90 border-t border-emerald-800/40 py-6 mt-12">
+        <div class="max-w-7xl mx-auto px-4 text-center space-y-2">
+            <p class="text-xs text-emerald-300/60">
+                &copy; 2026 Abima Personal Web. Created with Midnight Blue Elegance & Interactivity.
+            </p>
+            <p class="text-[10px] text-gold-400/70 font-mono">
+                IG: @wxyzabimaaa_ &bull; @syntaxberantakan_
+            </p>
+        </div>
+    </footer>
+
+    <!-- ========================================== -->
+    <!-- MODAL POPUP FOR MEMORY VAULT (HALAMAN 4)  -->
+    <!-- ========================================== -->
+    <div id="memory-modal" class="fixed inset-0 z-50 hidden bg-emerald-950/90 backdrop-blur-xl flex items-center justify-center p-4">
+        <div class="glass-card max-w-4xl w-full max-h-[90vh] rounded-3xl p-6 sm:p-8 border border-gold-400/40 overflow-y-auto relative space-y-6">
+            <!-- Close Button -->
+            <button onclick="closeMemoryModal()" class="absolute top-5 right-5 w-10 h-10 rounded-full bg-emerald-900 border border-emerald-700 text-gold-400 hover:bg-gold-500 hover:text-emerald-950 transition flex items-center justify-center">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+
+            <!-- Modal Header -->
+            <div class="space-y-1">
+                <span id="modal-tag" class="px-3 py-1 rounded-full bg-gold-500/20 text-gold-400 text-[10px] font-bold uppercase tracking-widest border border-gold-500/30">
+                    Vault Details
+                </span>
+                <h3 id="modal-title" class="text-2xl sm:text-3xl font-serif font-bold text-white"></h3>
+                <p id="modal-subtitle" class="text-xs text-emerald-200/70"></p>
+            </div>
+
+            <!-- Photos Inside Grid (4 Photos per Vault) -->
+            <div id="modal-photo-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                <!-- Dynamically Inserted photos via JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- MODAL POPUP FOR SUCCESS MESSAGE (HALAMAN 6)-->
+    <!-- ========================================== -->
+    <div id="success-modal" class="fixed inset-0 z-50 hidden bg-emerald-950/90 backdrop-blur-xl flex items-center justify-center p-4">
+        <div class="glass-card max-w-md w-full rounded-3xl p-8 border border-gold-400/40 text-center space-y-6">
+            <div class="w-16 h-16 rounded-full bg-gold-500/20 border-2 border-gold-400 text-gold-400 flex items-center justify-center mx-auto text-2xl">
+                <i class="fa-solid fa-circle-check"></i>
+            </div>
+            <div class="space-y-2">
+                <h3 class="text-2xl font-serif font-bold text-white">Pesan Terkirim!</h3>
+                <p id="success-text" class="text-xs text-emerald-200/80 leading-relaxed"></p>
+            </div>
+            <button onclick="closeSuccessModal()" class="w-full py-3 rounded-xl bg-gold-500 hover:bg-gold-400 text-emerald-950 font-bold text-xs uppercase tracking-widest transition">
+                Tutup
+            </button>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- JAVASCRIPT LOGIC                           -->
+    <!-- ========================================== -->
+    <script>
+        // Data Foto Kenangan Vault Halaman 4
+        const memoryVaults = {
+            1: {
+                title: "SHS ERA",
+                subtitle: "Album foto bersama teman teman SMK",
+                photos: [
+                    { url: "https://cdn.phototourl.com/member/2026-11-02-706d4f09-b18a-414e-b730-210e83b96062.jpg", caption: "RPL" },
+                    { url: "https://cdn.phototourl.com/member/2026-11-02-0e895c66-c9ae-4c8d-8dc0-056a7ef3f274.jpg", caption: "New Workshit" },
+                    { url: "https://cdn.phototourl.com/member/2026-11-02-26216874-4d6d-4d0e-9e0d-5e998ebca7d8.jpg", caption: "tisu basahhh" },
+            ]
+            },
+            2: {
+                title: "JHS ERA",
+                subtitle: "Koleksi foto bersama teman teman SMP",
+                photos: [
+                    { url: "https://cdn.phototourl.com/member/2026-11-02-23ad5835-d74e-440d-b032-4675cb6042e6.jpg", caption: "Study Tour Bali" },
+                    { url: "https://cdn.phototourl.com/member/2026-11-02-0400be8d-50c6-4d96-8b56-13de7f990b04.jpg", caption: "Bakar Bakar" },
+                ]
+            }
+        };
+
+        // 1. Navigation Switcher Function
+        function switchPage(pageNumber) {
+            // Hide all pages
+            document.querySelectorAll('.page-content').forEach(page => {
+                page.classList.add('hidden');
+                page.classList.remove('block');
+            });
+
+            // Show selected page
+            const activePage = document.getElementById(`page-${pageNumber}`);
+            if(activePage) {
+                activePage.classList.remove('hidden');
+                activePage.classList.add('block');
+            }
+
+            // Update Nav Active States
+            document.querySelectorAll('.nav-btn').forEach((btn, index) => {
+                if(index + 1 === pageNumber) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+
+            // Scroll smoothly to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // 2. Mobile Menu Toggle
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // 3. Quiz satu per satu: nilai dihitung setelah seluruh pertanyaan dijawab
+        const quizQuestions = [
+            { question: "Kapan Tanggal Lahir Bima?", options: ["19 September 2010", "1 Maret 2010", "23 Juli 2009"], answer: 1 },
+            { question: "Apa Makanan Kesukaan Bima?", options: ["Mie Ayam", "Nasi Padang", "Bakso"], answer: 0 },
+            { question: "Apa Minuman Favorit Bima?", options: ["Matcha Latte", "Es Teh Manis", "Chocolato Ice"], answer: 2 },
+            { question: "Lagu Favorit Yang Sering Didengar?", options: ["Everything u are - Hindia", "Dinda - Ali Sariah", "Kita - Sheila On 7"], answer: 0 },
+            { question: "Mana Warna Kesukaan Bima?", options: ["Warna Putih", "Warna Hijau", "Warna Biru"], answer: 2 }
+        ];
+        let currentQuestion = 0;
+        let quizScore = 0;
+        let quizAnswers = [];
+        let hasAnswered = false;
+
+        function renderQuestion() {
+            const q = quizQuestions[currentQuestion];
+            const progress = Math.round(((currentQuestion + 1) / quizQuestions.length) * 100);
+            document.getElementById('quiz-progress-text').textContent = `Pertanyaan ${currentQuestion + 1} dari ${quizQuestions.length}`;
+            document.getElementById('quiz-progress-percent').textContent = `${progress}%`;
+            document.getElementById('quiz-progress-bar').style.width = `${progress}%`;
+            document.getElementById('quiz-number').textContent = currentQuestion + 1;
+            document.getElementById('quiz-question').textContent = q.question;
+            document.getElementById('quiz-feedback').className = 'hidden rounded-xl px-4 py-3 text-sm font-semibold';
+            document.getElementById('quiz-feedback').textContent = '';
+            document.getElementById('quiz-next-button').classList.add('hidden');
+            document.getElementById('quiz-next-text').textContent = currentQuestion === quizQuestions.length - 1 ? 'Lihat Hasil Kuis' : 'Pertanyaan Selanjutnya';
+            hasAnswered = false;
+            document.getElementById('quiz-options').innerHTML = q.options.map((option, index) => `
+                <button type="button" class="quiz-option px-4 py-3 rounded-xl bg-emerald-900/40 border border-emerald-700/50 text-emerald-100 hover:bg-emerald-800/60 transition text-sm font-medium text-left flex justify-between items-center gap-3" onclick="selectAnswer(${index}, this)">
+                    <span>${String.fromCharCode(65 + index)}. ${option}</span><i class="fa-regular fa-circle text-xs opacity-60"></i>
+                </button>`).join('');
+        }
+
+        function selectAnswer(selectedIndex, selectedButton) {
+            if (hasAnswered) return;
+            hasAnswered = true;
+            const q = quizQuestions[currentQuestion];
+            const correct = selectedIndex === q.answer;
+            const buttons = document.querySelectorAll('#quiz-options .quiz-option');
+            buttons.forEach((button, index) => {
+                button.disabled = true;
+                if (index === q.answer) {
+                    button.classList.add('correct');
+                    button.querySelector('i').className = 'fa-solid fa-circle-check text-emerald-300';
+                }
+            });
+            if (correct) {
+                quizScore++;
+                selectedButton.classList.add('correct');
+                const feedback = document.getElementById('quiz-feedback');
+                feedback.className = 'rounded-xl px-4 py-3 text-sm font-semibold bg-emerald-900/70 border border-emerald-400 text-emerald-200';
+                feedback.innerHTML = '<i class="fa-solid fa-star text-gold-400 mr-2"></i>Benar sekali! Jawaban kamu tepat.';
+                if (typeof confetti === 'function') confetti({ particleCount: 25, spread: 55, origin: { y: 0.7 } });
+            } else {
+                selectedButton.classList.add('wrong');
+                selectedButton.querySelector('i').className = 'fa-solid fa-circle-xmark text-rose-400';
+                const feedback = document.getElementById('quiz-feedback');
+                feedback.className = 'rounded-xl px-4 py-3 text-sm font-semibold bg-rose-950/60 border border-rose-700 text-rose-200';
+                feedback.innerHTML = `<i class="fa-solid fa-circle-info text-rose-400 mr-2"></i>Belum tepat. Jawaban yang benar adalah <strong>${q.options[q.answer]}</strong>.`;
+            }
+            quizAnswers[currentQuestion] = selectedIndex;
+            document.getElementById('quiz-next-button').classList.remove('hidden');
+        }
+
+        function nextQuestion() {
+            if (!hasAnswered) return;
+            if (currentQuestion < quizQuestions.length - 1) {
+                currentQuestion++;
+                renderQuestion();
+            } else {
+                showQuizResult();
+            }
+        }
+
+        function showQuizResult() {
+            document.getElementById('quiz-question-area').classList.add('hidden');
+            document.getElementById('quiz-progress-area').classList.add('hidden');
+            document.getElementById('quiz-result').classList.remove('hidden');
+            const score = Math.round((quizScore / quizQuestions.length) * 100);
+            document.getElementById('quiz-final-score').textContent = score;
+            document.getElementById('quiz-correct-count').textContent = `${quizScore} dari ${quizQuestions.length} jawaban benar`;
+            document.getElementById('quiz-final-message').textContent = score === 100 ? 'Sempurna! Kamu benar-benar mengenal Abima.' : score >= 60 ? 'Bagus! Kamu cukup mengenal Abima.' : 'Terima kasih sudah mencoba. Yuk pelajari lagi dan coba sekali lagi!';
+            document.getElementById('quiz-answer-summary').innerHTML = quizQuestions.map((q, index) => {
+                const correct = quizAnswers[index] === q.answer;
+                return `<div class="rounded-xl p-3 border ${correct ? 'border-emerald-500/50 bg-emerald-900/30' : 'border-rose-500/40 bg-rose-950/20'}">
+                    <p class="text-xs text-emerald-200/70 mb-1">${index + 1}. ${q.question}</p>
+                    <p class="text-sm ${correct ? 'text-emerald-300' : 'text-rose-300'}">${correct ? 'Benar' : 'Jawaban kamu: ' + q.options[quizAnswers[index]]}</p>
+                    ${correct ? '' : `<p class="text-sm text-emerald-300 mt-1">Jawaban benar: ${q.options[q.answer]}</p>`}
+                </div>`;
+            }).join('');
+            if (score === 100 && typeof confetti === 'function') confetti({ particleCount: 150, spread: 90, origin: { y: 0.6 } });
+        }
+
+        function restartQuiz() {
+            currentQuestion = 0;
+            quizScore = 0;
+            quizAnswers = [];
+            hasAnswered = false;
+            document.getElementById('quiz-result').classList.add('hidden');
+            document.getElementById('quiz-question-area').classList.remove('hidden');
+            document.getElementById('quiz-progress-area').classList.remove('hidden');
+            renderQuestion();
+        }
+        renderQuestion();
+
+        // 4. Memory Modal Controls
+        function openMemoryModal(vaultId) {
+            const vault = memoryVaults[vaultId];
+            if(!vault) return;
+
+            document.getElementById('modal-title').innerText = vault.title;
+            document.getElementById('modal-subtitle').innerText = vault.subtitle;
+            document.getElementById('modal-tag').innerText = `Brankas Kenangan #${vaultId}`;
+
+            const gridContainer = document.getElementById('modal-photo-grid');
+            gridContainer.innerHTML = '';
+
+            vault.photos.forEach(photo => {
+                const photoCard = `
+                    <div class="glass-card rounded-2xl overflow-hidden border border-emerald-700/50 group">
+                        <div class="h-48 overflow-hidden relative">
+                            <img src="${photo.url}" alt="${photo.caption}" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                            <div class="absolute inset-0 bg-gradient-to-t from-emerald-950/90 via-transparent to-transparent"></div>
+                            <span class="absolute bottom-3 left-3 text-xs font-medium text-gold-300">
+                                <i class="fa-solid fa-camera text-gold-400 mr-1"></i> ${photo.caption}
+                            </span>
+                        </div>
+                    </div>
+                `;
+                gridContainer.innerHTML += photoCard;
+            });
+
+            document.getElementById('memory-modal').classList.remove('hidden');
+        }
+
+        function closeMemoryModal() {
+            document.getElementById('memory-modal').classList.add('hidden');
+        }
+
+        // 5. Message Form Submission & Confetti Effect
+        function handleFormSubmit(event) {
+            event.preventDefault();
+
+            const name = document.getElementById('sender-name').value;
+            const message = document.getElementById('sender-message').value;
+
+            if(name && message) {
+                // Celebration Confetti
+                confetti({
+                    particleCount: 100,
+                    spread: 70,
+                    origin: { y: 0.6 }
+                });
+
+                document.getElementById('success-text').innerText = `Terima kasih banyak, ${name}! Pesanmu: "${message}" telah berhasil disampaikan dengan hangat.`;
+                document.getElementById('success-modal').classList.remove('hidden');
+
+                // Reset form
+                document.getElementById('message-form').reset();
+            }
+        }
+
+        function closeSuccessModal() {
+            document.getElementById('success-modal').classList.add('hidden');
+        }
+    </script>
+
+    <script>
+        // Tampilkan layar loading selama sekitar 2 detik, lalu tampilkan tombol masuk.
+        document.addEventListener('DOMContentLoaded', function () {
+            const intro = document.getElementById('abima-intro');
+            const loadingText = document.getElementById('intro-loading-text');
+            const enterArea = document.getElementById('intro-enter-area');
+            const enterButton = document.getElementById('intro-enter-button');
+
+            window.setTimeout(function () {
+                if (loadingText) loadingText.style.display = 'none';
+                if (enterArea) enterArea.classList.add('ready');
+            }, 2000);
+
+            if (enterButton && intro) {
+                enterButton.addEventListener('click', function () {
+                    intro.classList.add('intro-hidden');
+                    window.setTimeout(function () {
+                        intro.remove();
+                    }, 750);
+                });
+            }
+        });
+    </script>
+
+</body>
+</html>
