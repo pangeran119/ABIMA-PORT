@@ -235,6 +235,55 @@
         .quiz-option.correct { background: rgba(4,120,87,.55); border: 2px solid #34d399; color: #fff; }
         .quiz-option.wrong { background: rgba(136,19,55,.35); border: 2px solid #fb7185; color: #fecdd3; }
 
+
+        /* Navigasi halaman: tombol sebelumnya dan selanjutnya */
+        .page-navigation {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            max-width: 1100px;
+            margin: 48px auto 8px;
+            padding-top: 22px;
+            border-top: 1px solid rgba(143, 170, 196, .2);
+        }
+        .page-navigation button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            min-width: 145px;
+            padding: 12px 20px;
+            border: 1px solid rgba(143, 170, 196, .35);
+            border-radius: 999px;
+            background: #173b59;
+            color: #edf3f8;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: .04em;
+            transition: .25s ease;
+            cursor: pointer;
+        }
+        .page-navigation button:hover {
+            background: #245477;
+            border-color: #7896b3;
+            transform: translateY(-2px);
+        }
+        .page-navigation .previous-page {
+            background: rgba(11, 37, 64, .55);
+        }
+        .page-navigation .page-counter {
+            color: rgba(199, 220, 239, .65);
+            font-size: 11px;
+            text-align: center;
+            letter-spacing: .08em;
+        }
+        @media (max-width: 480px) {
+            .page-navigation { gap: 8px; margin-top: 34px; }
+            .page-navigation button { min-width: 0; flex: 1; padding: 12px 10px; font-size: 10px; }
+            .page-navigation .page-counter { display: none; }
+        }
+
         /* Tampilan responsif dan aksen warna yang lebih sederhana */
         html { scroll-behavior: smooth; }
         body { overflow-x: hidden; }
@@ -1037,6 +1086,45 @@
                     }, 750);
                 });
             }
+        });
+    </script>
+
+
+    <script>
+        // Tambahkan navigasi Previous / Next pada seluruh halaman utama.
+        document.addEventListener('DOMContentLoaded', function () {
+            const totalPages = document.querySelectorAll('.page-content').length;
+
+            document.querySelectorAll('.page-content').forEach(function (page, index) {
+                const pageNumber = index + 1;
+                const navigation = document.createElement('div');
+                navigation.className = 'page-navigation';
+
+                const previousButton = pageNumber > 1
+                    ? `<button type="button" class="previous-page" onclick="switchPage(${pageNumber - 1})">
+                           <i class="fa-solid fa-arrow-left"></i><span>Sebelumnya</span>
+                       </button>`
+                    : `<span></span>`;
+
+                const nextButton = pageNumber < totalPages
+                    ? `<button type="button" onclick="switchPage(${pageNumber + 1})">
+                           <span>Selanjutnya</span><i class="fa-solid fa-arrow-right"></i>
+                       </button>`
+                    : `<button type="button" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+                           <span>Kembali ke Atas</span><i class="fa-solid fa-arrow-up"></i>
+                       </button>`;
+
+                const pageLabel = pageNumber === totalPages
+                    ? 'HALAMAN TERAKHIR'
+                    : `HALAMAN ${pageNumber} DARI ${totalPages}`;
+
+                navigation.innerHTML = `
+                    ${previousButton}
+                    <span class="page-counter">${pageLabel}</span>
+                    ${nextButton}
+                `;
+                page.appendChild(navigation);
+            });
         });
     </script>
 
